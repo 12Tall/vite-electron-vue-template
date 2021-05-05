@@ -1,0 +1,21 @@
+{
+  "name": "vite-electron-vue-template",
+  "version": "0.0.0",
+  "main": "main.js",
+  "scripts": {
+    "dev": "concurrently -k \"vite --port 5000\" \"wait-on http://localhost:5000/index.html&& set NODE_ENV=DEV&& electron .\"",
+    "dist": "vite build&&electron-packager . vite-electron-vue-template --platform=win32 --arch=x64 --icon=app.ico --out=./out --app-version=0.0.1 --asar --overwrite --ignore=node_modules"
+  },
+  "dependencies": {
+    "vue": "^3.0.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^1.2.2",
+    "@vue/compiler-sfc": "^3.0.5",
+    "concurrently": "^6.0.2",
+    "electron": "^12.0.6",
+    "electron-packager": "^15.2.0",
+    "vite": "^2.2.3",
+    "wait-on": "^5.3.0"
+  }
+}
