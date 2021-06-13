@@ -65,3 +65,4 @@ app.on('ready', () => {
 ## 参考资料
 1. [Vue.js & Electron: The easy way.](https://medium.com/@mikeal/vue-js-electron-the-easy-way-adc3ca09234a)
 1. [electron-builder打包指定资源到安装目录](https://www.cnblogs.com/mrwh/p/12961446.html)  
+1. [Electron打包后获取不到系统托盘图标](https://segmentfault.com/q/1010000022293025)

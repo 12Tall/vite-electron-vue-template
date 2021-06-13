@@ -3,10 +3,13 @@
   "version": "0.0.0",
   "main": "main.js",
   "scripts": {
-    "dev": "concurrently -k \"vite --port 5000\" \"wait-on http://localhost:5000/index.html&& set NODE_ENV=DEV&& electron .\"",
-    "dist": "vite build&&electron-packager . vite-electron-vue-template --platform=win32 --arch=x64 --icon=app.ico --out=./out --app-version=0.0.1 --asar --overwrite --ignore=node_modules"
+    "dev": "concurrently -k \"vite --port 5000\" \"wait-on http://localhost:5000/index.html&& set DEV=DEV&& electron .\"",
+    "dist": "vite build&&electron-packager . vite-electron-vue-template --platform=win32 --arch=ia32 --icon=app.ico --out=./out --app-version=0.0.1 --asar --overwrite --ignore=node_modules",
+    "dist2": "vite build&&electron-packager . vite-electron-vue-template --platform=win32 --arch=ia32 --icon=./app.ico --out=./out --asar --app-version=0.0.1 --overwrite "
   },
   "dependencies": {
+    "electron-rebuild": "^2.3.5",
+    "user32-napi": "file:./user32-napi",
     "vue": "^3.0.5"
   },
   "devDependencies": {

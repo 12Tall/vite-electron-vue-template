@@ -1,0 +1,11 @@
+{
+  "name": "user32-napi",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:12Tall/user32-napi.git",
+  "author": "12tall <fb.ouyang@outlook.com>",
+  "license": "MIT",
+  "dependencies": {
+    "bindings": "^1.5.0"
+  }
+}

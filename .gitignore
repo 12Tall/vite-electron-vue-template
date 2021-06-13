@@ -4,3 +4,7 @@ node_modules
 dist
 dist-ssr
 *.local
+build
+yarn-error.log
+*.mp4
+*.mp3
