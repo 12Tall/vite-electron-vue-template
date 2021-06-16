@@ -10,19 +10,20 @@
 </head>
 
 <body>
-  <video autoplay height="100%" width="100%" controls loop src="./src/assets/mp4/out.mp4"></video>
+  <!-- <video autoplay height="100%" width="100%" controls loop src="./src/assets/mp4/out.mp4"></video> -->
 
-  <!-- <div id="app"></div>
-  <script type="module" src="/src/main.js"></script> -->
+  <div id="app"></div>
+  <script type="module" src="/src/main.js"></script>
   <script>
     // 定义在主窗口的事件监听
     // https://github.com/electron/electron/issues/9920#issuecomment-575839738
     var speechSU = new window.SpeechSynthesisUtterance();
     speechSU.lang = "zh-cmn-Hans"
-    window.api.receive("readText", message=> {
+    window.api.receive("readText", message => {
       speechSU.text = message;
       window.speechSynthesis.speak(speechSU);
     })
+
   </script>
 </body>
 

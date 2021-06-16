@@ -5,15 +5,15 @@ const { contextBridge, ipcRenderer } = require('electron')
 // https://www.electronjs.org/docs/tutorial/process-model#preload-scripts
 contextBridge.exposeInMainWorld(
     "api", {
-    send: (channel, data) => {
+    send: (channel, ...data) => {
         // 消息白名单
-        let validChannels = ["readText"];
+        let validChannels = ["readText", 'forward-mouse-events'];
         if (validChannels.includes(channel)) {
-            ipcRenderer.send(channel, data);
+            ipcRenderer.send(channel, ...data);
         }
     },
     receive: (channel, func) => {
-        let validChannels = ["readText"];        
+        let validChannels = ["readText", 'forward-mouse-events'];
         // 消息过滤
         if (validChannels.includes(channel)) {
             ipcRenderer.on(channel, (event, ...args) => func(...args));

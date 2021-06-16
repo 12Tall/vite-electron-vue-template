@@ -21,17 +21,18 @@ app.on('ready', () => {
 
 
 
-  let { width, height } = screen.getPrimaryDisplay().workAreaSize;
-
+  let { width, height } = screen.getPrimaryDisplay().workAreaSize,
+    w = 1000,
+    h = 618;
   window = new BrowserWindow({
-    width: width,
-    height: height,
-    x: 0,
-    y: 0,
+    width: w,
+    height: h,
+    x: width-w,
+    y: height-h-5,
     resizable: false,
     movable: false,
     minimizable: false,
-    type: "toolbar",
+    // type: "toolbar",
     frame: false,
     transparent: true,  // 窗口透明，解决程序退出边框遗留问题
     // https://stackoverflow.com/questions/44391448/electron-require-is-not-defined
@@ -52,11 +53,10 @@ app.on('ready', () => {
     onClock.show();
   });
 
+  let parent = user32.getWallpaperWindow(),
+    wallpaper = window.getNativeWindowHandle().readInt32LE();
+  user32.setParent(wallpaper, parent);
 
-
-  parent = user32.getWallpaperWindow();
-  wallpaper = window.getNativeWindowHandle().readInt32LE();
-  user32.setParent(wallpaper, parent)
 
   // 系统托盘
   var icon = isDev ? './app.png' : path.join(path.dirname(app.getPath('exe')), '/resources/app.asar/app.png');
@@ -66,9 +66,13 @@ app.on('ready', () => {
     type: "checkbox",
     checked: false,
     click: function (item) {
-      parent = item.checked ? null : user32.getWallpaperWindow();
-      wallpaper = window.getNativeWindowHandle().readInt32LE();
-      user32.setParent(wallpaper, parent);
+      var father = item.checked ? null : parent;
+      // wallpaper = window.getNativeWindowHandle().readInt32LE();
+      user32.setParent(wallpaper, father);
+      // user32.setParent(father, null);
+      user32.setWindowTransparent(wallpaper);
+      // user32.updateWindow(wallpaper);
+      // parent = user32.getWallpaperWindow();
     }
   }, {
     label: '退出',
@@ -85,6 +89,14 @@ app.on('ready', () => {
   // window.webContents.openDevTools({
   //   mode: 'right'
   // });
+
+
+  // 添加事件透传，但是好像是用不上了
+  // https://www.electronjs.org/docs/api/frameless-window#forwarding
+  // ipcMain.on('forward-mouse-events', (event, ...args) => {
+  //   window.setIgnoreMouseEvents(...args)
+  // })
+
 })
 
 // 开机自动登录

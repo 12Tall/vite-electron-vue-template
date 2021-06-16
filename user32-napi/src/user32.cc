@@ -6,6 +6,68 @@
 #define DECLARE_NAPI_METHOD(name, func) \
   { name, 0, func, 0, 0, 0, napi_default, 0 }
 
+static napi_value setWindowTransparent(napi_env env, napi_callback_info info) {
+  napi_status status;
+  napi_value res;
+
+  size_t argc = 1;
+  napi_value argv[1];
+  status = napi_get_cb_info(env, info, &argc, argv, NULL, NULL);
+  assert(status == napi_ok);
+  if (argc < 1) {
+    napi_throw_type_error(env, NULL, "FindWoindow takes only 2 parameters");
+    return NULL;
+  }
+
+  int32_t handle = 0;
+  napi_valuetype valType;
+  status = napi_typeof(env, argv[0], &valType);
+  assert(status == napi_ok);
+  if (valType == napi_number) {
+    status = napi_get_value_int32(env, argv[0], &handle);
+    assert(status == napi_ok);
+  }
+
+  // https://blog.csdn.net/u011822516/article/details/41946631
+  // 一种实现窗口透明的方式
+  bool result = SetWindowLongA((HWND)handle, GWL_EXSTYLE,
+                               GetWindowLongA((HWND)handle, GWL_EXSTYLE) |
+                                   WS_EX_LAYERED) != 0;
+
+  status = napi_get_boolean(env, result, &res);
+  assert(status == napi_ok);
+  return res;
+}
+static napi_value updateWindow(napi_env env, napi_callback_info info) {
+  napi_status status;
+  napi_value res;
+
+  size_t argc = 1;
+  napi_value argv[1];
+  status = napi_get_cb_info(env, info, &argc, argv, NULL, NULL);
+  assert(status == napi_ok);
+  if (argc < 1) {
+    napi_throw_type_error(env, NULL, "FindWoindow takes only 2 parameters");
+    return NULL;
+  }
+
+  int32_t handle = 0;
+  napi_valuetype valType;
+  status = napi_typeof(env, argv[0], &valType);
+  assert(status == napi_ok);
+  if (valType == napi_number) {
+    status = napi_get_value_int32(env, argv[0], &handle);
+    assert(status == napi_ok);
+  }
+
+  bool result = UpdateWindow((HWND)handle);
+
+  status = napi_get_boolean(env, result, &res);
+  assert(status == napi_ok);
+
+  return res;
+}
+
 static napi_value setParent(napi_env env, napi_callback_info info) {
   napi_status status;
   napi_value res;
@@ -62,7 +124,8 @@ BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam) {
 
   if (p) {
     // 将指针指向下一个WorkerW
-    // 还有一种判断方法，就是下一个WorkerW 的Handle 要比包含`SHELLDLL_DefView`的WorkerW 的Handle 大2
+    // 还有一种判断方法，就是下一个WorkerW 的Handle
+    // 要比包含`SHELLDLL_DefView`的WorkerW 的Handle 大2
     *ret = FindWindowExA(NULL, hwnd, "WorkerW", NULL);
   }
   return true;
@@ -78,11 +141,13 @@ static napi_value getWallpaperWindow(napi_env env, napi_callback_info info) {
   HWND progman = FindWindowA("ProgMan", NULL);
 
   // 2. 向最底层窗口创建两个WorkerW 窗口，如果已存在则什么都不会发生
-  // 网络上大部分代码发送的消息参数都是0x00,0x00。但这会造成一旦WorkerW 窗口被不小心销毁，就再也找不到了  
+  // 网络上大部分代码发送的消息参数都是0x00,0x00。但这会造成一旦WorkerW
+  // 窗口被不小心销毁，就再也找不到了
   // https://gitlab.com/kelteseth/ScreenPlay/-/blob/master/ScreenPlayWallpaper/src/winwindow.cpp#L387
   // 而相应的，在监视窗口消息时，应使用对应版本的spy++，否则是拦截不到消息的
   // 需要注意的是，在程序异常退出时会有边框遗留在壁纸上
   SendMessageTimeout(progman, 0x052C, 0x0D, 0x01, SMTO_BLOCK, 1000, nullptr);
+  // SendMessage(progman, 0x052C, 0x0D, 0x01);
 
   // 3. 枚举所有窗口，直到发现包含'SHELLDLL_DefView'
   // 子窗口的WorkerW，他下面的WorkerW 就是我们需要的WorkerW
@@ -148,8 +213,10 @@ static napi_value Init(napi_env env, napi_value exports) {
       DECLARE_NAPI_METHOD("findWindow", findWindow),
       DECLARE_NAPI_METHOD("getWallpaperWindow", getWallpaperWindow),
       DECLARE_NAPI_METHOD("setParent", setParent),
+      DECLARE_NAPI_METHOD("updateWindow", updateWindow),
+      DECLARE_NAPI_METHOD("setWindowTransparent", setWindowTransparent),
   };
-  status = napi_define_properties(env, exports, 3, desc);
+  status = napi_define_properties(env, exports, 5, desc);
   assert(status == napi_ok);
   return exports;
 }

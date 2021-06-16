@@ -62,6 +62,8 @@ app.on('ready', () => {
 
 程序打包时的配置比较简陋，只保证能跑，更高级的功能需要自己去探索了。
 
+修改本地库文件后，记得`yarn add file:./user32-napi`
+
 ## 参考资料
 1. [Vue.js & Electron: The easy way.](https://medium.com/@mikeal/vue-js-electron-the-easy-way-adc3ca09234a)
 1. [electron-builder打包指定资源到安装目录](https://www.cnblogs.com/mrwh/p/12961446.html)  

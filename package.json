@@ -9,6 +9,8 @@
   },
   "dependencies": {
     "electron-rebuild": "^2.3.5",
+    "element-plus": "^1.0.2-beta.48",
+    "lunar-javascript": "^1.2.4",
     "node-schedule": "^2.0.0",
     "user32-napi": "file:./user32-napi",
     "vue": "^3.0.5"
