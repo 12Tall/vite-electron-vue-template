@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "electron-rebuild": "^2.3.5",
+    "node-schedule": "^2.0.0",
     "user32-napi": "file:./user32-napi",
     "vue": "^3.0.5"
   },
