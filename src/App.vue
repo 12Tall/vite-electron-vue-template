@@ -1,11 +1,31 @@
 <template>
-  <Calendar></Calendar>
+  <Calendar>
+    <template v-slot:default="{ data }">
+      <!-- 注意插槽在使用时要加花括号 -->
+      <div
+        class="title"
+        :class="{
+          weekend: data.week > 5 || data.week < 1,
+          today: data.isToday,
+          thisMonth: data.month === new Date().getMonth() + 1,
+        }"
+      >
+        <div>{{ GetContent(data) }}</div>
+        <div></div>
+      </div>
+    </template>
+  </Calendar>
   <!-- <img alt="Vue logo" src="./assets/logo.png" /> -->
 </template>
 
 <script setup>
 import { defineComponent, ref } from "vue";
 import Calendar from "./components/Calendar.vue";
+
+function GetContent(data) {
+  var lunar = data.lunarDay === "初一" ? `${data.lunarMonth}月` : data.lunarDay;
+  return `${data.month}-${data.day} ${lunar}`;
+}
 
 // export default defineComponent({
 //   setup() {
@@ -33,5 +53,20 @@ import Calendar from "./components/Calendar.vue";
   left: 0;
   bottom: 0;
   right: 0;
+}
+.title {
+  border-radius: 5px;
+}
+
+/* CSS 的优先级受到排列顺序的影响 */
+.weekend {
+  color: gold;
+}
+.thisMonth {
+  background-color: #4f4f4f4f;
+}
+.today {
+  color: gold;
+  background-color:#8f8f8f8f;
 }
 </style>

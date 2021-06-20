@@ -22,13 +22,13 @@ app.on('ready', () => {
 
 
   let { width, height } = screen.getPrimaryDisplay().workAreaSize,
-    w = 1000,
-    h = 618;
+    w = 1165,
+    h = 720;
   window = new BrowserWindow({
-    width: w,
+    width: w - 5,
     height: h,
-    x: width-w,
-    y: height-h-5,
+    x: width - w,
+    y: height - h,
     resizable: false,
     movable: false,
     minimizable: false,
