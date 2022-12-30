@@ -5,7 +5,11 @@
   "repository": "git@github.com:12Tall/user32-napi.git",
   "author": "12tall <fb.ouyang@outlook.com>",
   "license": "MIT",
+  "scripts": {
+    "build":"node-gyp configure && node-gyp build"
+  },
   "dependencies": {
-    "bindings": "^1.5.0"
+    "bindings": "^1.5.0",
+    "env-paths": "^3.0.0"
   }
 }

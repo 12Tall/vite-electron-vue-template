@@ -13,8 +13,8 @@
 </template>
 
 <script setup>
-import { defineComponent, ref, reactive } from "vue";
-import { Lunar, Solar } from "lunar-javascript";
+import { ref, reactive } from "vue";
+import { Solar } from "lunar-javascript";
 
 
 
@@ -60,6 +60,7 @@ function GetDate(index) {
   justify-content: space-between;
   color: aliceblue;
 }
+
 .calendar_title {
   height: 100px;
   background-color: transparent;
@@ -70,6 +71,7 @@ function GetDate(index) {
   display: flex;
   justify-content: space-between;
 }
+
 .calendar_col {
   display: inline-block;
   width: 155px;
